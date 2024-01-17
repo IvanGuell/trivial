@@ -11,13 +11,13 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -32,14 +32,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.trivial.hangingLetter
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MenuScreen(navController: NavController) {
     var textFieldValue by remember { mutableStateOf("") }
-    var selectedDifficulty by remember { mutableStateOf("Medio") }
-    var show by remember { mutableStateOf( false )}
 
     Column(
         modifier = Modifier
@@ -64,119 +60,52 @@ fun MenuScreen(navController: NavController) {
             letterSpacing = 10.sp
 
         )
+
         Button(
-            modifier = Modifier.offset(y = (560).dp),
-            onClick = {show = true},
+            modifier = Modifier
+                .padding(top = 46.dp),
+            onClick = {
+                navController.navigate("settings_screen")
+
+            },
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color(0xFF051620)
+            ),
             shape = RectangleShape
-
         ) {
-            Text("Ayuda",
-                fontFamily = hangingLetter,
-                fontSize = 44.sp
-
-            )
-
-
+            Text(
+                text = "Ajustes",
+                color = Color.White)
         }
-        cuadroAyuda(show, {show = false}, {show = false})
-
-
-        var dificultad = dropDownDificultad()
-
-
-
-
         Column(
             modifier = Modifier.fillMaxWidth(),
             verticalArrangement = Arrangement.Bottom,
-            horizontalAlignment = Alignment.CenterHorizontally,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Button(
-                modifier = Modifier.offset(y = (260).dp).background(Color.Transparent),
+                modifier = Modifier
+                    .padding(top = 6.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFF051620)
+                ),
                 onClick = {
-                    navController.navigate(Routes.PlayScreen.route)
+                    navController.navigate("play_screen")
                 },
-                shape = RectangleShape,
-
+                shape = RectangleShape
             ) {
-                Text("Play",
-                        fontFamily = hangingLetter,
-                    fontWeight = FontWeight.SemiBold,
-
-                    fontSize = 44.sp)
-
-            }
-        }
-    }
-}
-
-
-@Composable
-
-fun cuadroAyuda(show: Boolean, onDismiss: () -> Unit, onConfirm: () -> Unit) {
-
-    if (show) {
-        AlertDialog(
-            onDismissRequest = { onDismiss() },
-            title = { Text("¿Como jugar?", fontSize = 20.sp) },
-            text = {
                 Text(
-                    text = "Se trata del juego el ahorcado, las mecanicas son simples, " +
-                            "solo tienes que ir introduciendo letras hasta acertar la palabra " +
-                            "o fallar mas de 10 veces!", fontSize = 20.sp
+                    text = "Jugar!",
+                    color = Color.White
                 )
-            },
 
-
-            confirmButton = {
-                TextButton(onClick = { onConfirm() }) {
-                    Text(
-                        text = "Ok!",
-                        fontSize = 20.sp
-                    )
-                }
-            },
-
-            )
-
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun dropDownDificultad(): String {
-
-    var expanded by remember { mutableStateOf(false) }
-    var selectedText by remember { mutableStateOf("Dificultad") }
-
-    Column (
-        modifier = Modifier
-            .offset(y = (248).dp)
-
-
-    ) {
-        OutlinedTextField(
-            value = selectedText,
-            onValueChange = { selectedText = it },
-            enabled = false,
-            readOnly = true,
-            modifier = Modifier
-                .clickable { expanded = true }
-                .fillMaxWidth()
-        )
-        DropdownMenu(
-            expanded = expanded,
-            onDismissRequest = { expanded = false },
-            modifier = Modifier.padding(16.dp)
-        ) {
-            listOf("Fácil", "Medio", "Difícil").forEach { difficulty ->
-                DropdownMenuItem(text = { Text(text = difficulty) }, onClick = {
-                    expanded = false
-                    selectedText = difficulty
-                })
             }
         }
     }
-    return selectedText
 }
+
+
+
+
+
+
 

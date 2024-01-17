@@ -1,8 +1,9 @@
-package com.example.trivial
+package com.example.trivial.view
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -15,16 +16,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.trivial.R
 import com.example.trivial.ui.theme.TrivialTheme
-import com.example.trivial.view.MenuScreen
-import com.example.trivial.view.PlayScreen
-import com.example.trivial.view.ResultScreen
-import com.example.trivial.view.Routes
+import com.example.trivial.viewmodel.QuestionViewModel
 
 var hangingLetter = FontFamily(Font(R.font.hangingframes2))
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+        val questionViewModel by viewModels<QuestionViewModel>()
         super.onCreate(savedInstanceState)
         setContent {
             TrivialTheme(true) {
@@ -40,7 +40,8 @@ class MainActivity : ComponentActivity() {
                     ) {
                         composable(Routes.MenuScreen.route) { MenuScreen(navController = navigationController) }
                         composable(Routes.PlayScreen.route) { PlayScreen(navController = navigationController) }
-                        composable(Routes.PlayScreen.route) { ResultScreen(navController = navigationController) }
+                        composable(Routes.SettingsScreen.route) { SettingsScreen(navController = navigationController) }
+                        composable(Routes.ResultScreen.route) { ResultScreen(navController = navigationController) }
                     }
                 }
             }
