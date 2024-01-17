@@ -12,19 +12,22 @@ class QuestionViewModel : ViewModel() {
     private val listaDePreguntas = listOf(
         QuestionModel(
             "¿Cuál es la capital de Francia?",
-            listOf("Madrid", "París", "Londres"),
+            listOf("Madrid", "Paris", "Londres"),
+            "Paris",
             "Geografía",
             "Fácil"
         ),
         QuestionModel(
             "¿Quién fue el primer presidente de Estados Unidos?",
             listOf("George Washington", "Thomas Jefferson", "Abraham Lincoln"),
+            "George Washington",
             "Historia",
             "Medio"
         ),
         QuestionModel(
             "¿Quién fue el director de Matrix?",
             listOf("Lana Wachowski", "Monica Blanchette", "Harry Styles"),
+            "Lana Wachowski",
             "Cine",
             "Dificil"
         ),
