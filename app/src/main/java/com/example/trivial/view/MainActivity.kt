@@ -39,8 +39,8 @@ class MainActivity : ComponentActivity() {
                         startDestination = Routes.MenuScreen.route
                     ) {
                         composable(Routes.MenuScreen.route) { MenuScreen(navController = navigationController) }
-                        composable(Routes.PlayScreen.route) { PlayScreen(navController = navigationController) }
-                        composable(Routes.SettingsScreen.route) { SettingsScreen(navController = navigationController) }
+                        composable(Routes.PlayScreen.route) { PlayScreen(navController = navigationController, questionViewModel) }
+                        composable(Routes.SettingsScreen.route) { SettingsScreen(navController = navigationController, questionViewModel) }
                         composable(Routes.ResultScreen.route) { ResultScreen(navController = navigationController) }
                     }
                 }
