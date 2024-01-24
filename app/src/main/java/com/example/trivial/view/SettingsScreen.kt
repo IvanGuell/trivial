@@ -5,18 +5,22 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.selection.selectable
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -32,7 +36,6 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import com.example.trivial.viewmodel.QuestionViewModel
 
@@ -41,6 +44,7 @@ fun SettingsScreen(navController: NavController, questionViewModel: QuestionView
     var difficulty by remember { mutableStateOf(questionViewModel.difficult) }
     var type by remember { mutableStateOf(questionViewModel.genre) }
     var show by remember { mutableStateOf(false) }
+    var rounds by remember { mutableStateOf(questionViewModel.rounds ) }
 
 
     Column(
@@ -120,6 +124,51 @@ fun difficultyDropDown(questionViewModel: QuestionViewModel): String {
 }
 
 
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun typeDropDown(questionViewModel: QuestionViewModel): String {
+
+    var expanded by remember { mutableStateOf(false) }
+    var selectedText by remember { mutableStateOf(questionViewModel.genre) }
+
+    Column(
+        modifier = Modifier
+            .offset(y = (10).dp)
+    ) {
+        OutlinedTextField(
+            value = selectedText,
+            onValueChange = { selectedText = it },
+            enabled = false,
+            readOnly = true,
+            modifier = Modifier
+                .clickable { expanded = true }
+                .width(300.dp),
+
+            textStyle = TextStyle(
+                fontSize = 26.sp,
+                color = Color.Black,
+                textAlign = TextAlign.Center
+            ),
+        )
+        DropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false },
+            modifier = Modifier
+                .padding(16.dp)
+        ) {
+            listOf("Historia", "Geografia", "Cine", "Todos").forEach { type ->
+                DropdownMenuItem(text = { Text(text = type) }, onClick = {
+                    expanded = false
+                    selectedText = type
+                    questionViewModel.changeGenre(selectedText)
+                })
+            }
+        }
+    }
+    return selectedText
+}
+
 @Composable
 
 fun HelpDialog(show: Boolean, onDismiss: () -> Unit, onConfirm: () -> Unit) {
@@ -166,46 +215,34 @@ fun HelpDialog(show: Boolean, onDismiss: () -> Unit, onConfirm: () -> Unit) {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+
+
 @Composable
-fun typeDropDown(questionViewModel: QuestionViewModel): String {
-
-    var expanded by remember { mutableStateOf(false) }
-    var selectedText by remember { mutableStateOf(questionViewModel.genre) }
-
-    Column(
-        modifier = Modifier
-            .offset(y = (10).dp)
-    ) {
-        OutlinedTextField(
-            value = selectedText,
-            onValueChange = { selectedText = it },
-            enabled = false,
-            readOnly = true,
-            modifier = Modifier
-                .clickable { expanded = true }
-                .width(300.dp),
-
-            textStyle = TextStyle(
-                fontSize = 26.sp,
-                color = Color.Black,
-                textAlign = TextAlign.Center
-            ),
-        )
-        DropdownMenu(
-            expanded = expanded,
-            onDismissRequest = { expanded = false },
-            modifier = Modifier
-                .padding(16.dp)
-        ) {
-            listOf("Historia", "Geografia", "Cine", "Todos").forEach { type ->
-                DropdownMenuItem(text = { Text(text = type) }, onClick = {
-                    expanded = false
-                    selectedText = type
-                    questionViewModel.changeGenre(selectedText)
-                })
+fun roundsRadioButton() {
+    val radioOptions = listOf("5", "10", "15")
+    val (selectedOption, onOptionSelected) = remember { mutableStateOf(radioOptions[1] ) }
+    Column {
+        radioOptions.forEach { text ->
+            Row(
+                Modifier
+                    .fillMaxWidth()
+                    .selectable(
+                        selected = (text == selectedOption),
+                        onClick = {
+                            onOptionSelected(text)
+                        }
+                    )
+                    .padding(horizontal = 16.dp)
+            ) {
+                RadioButton(
+                    selected = (text == selectedOption),
+                    onClick = { onOptionSelected(text) }
+                )
+                Text(
+                    text = text,
+                    modifier = Modifier.padding(start = 16.dp)
+                )
             }
         }
     }
-    return selectedText
 }

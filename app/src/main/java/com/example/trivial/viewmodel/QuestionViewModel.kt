@@ -7,14 +7,18 @@ import androidx.lifecycle.ViewModel
 import com.example.trivial.model.QuestionModel
 
 class QuestionViewModel : ViewModel() {
-    private val _preguntaActual = MutableLiveData<QuestionModel?>()
-    val preguntaActual: LiveData<QuestionModel?> get() = _preguntaActual
-
+    private val _actualQuestion = MutableLiveData<QuestionModel?>()
+    private val _rounds = MutableLiveData<Int>()
+    val actualQuestion: LiveData<QuestionModel?> get() = _actualQuestion
+    val rounds: LiveData<Int> get() = _rounds
     fun setPreguntaActual(question: QuestionModel?) {
-        _preguntaActual.value = question
+        _actualQuestion.value = question
     }
 
+    fun nextRound(){
 
+
+    }
     private val listaDePreguntas = listOf(
         QuestionModel(
             "¿Cuál es la capital de Francia?",
