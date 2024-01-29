@@ -22,6 +22,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.trivial.model.QuestionModel
@@ -33,6 +34,39 @@ fun PlayScreen(navController: NavController, questionViewModel: QuestionViewMode
     var type by remember { mutableStateOf(questionViewModel.genre) }
 
     val preguntaActual by questionViewModel.actualQuestion.observeAsState()
+    val rounds by questionViewModel.rounds.observeAsState()
+    var currentRound by remember { mutableStateOf(0) }
+
+
+    Column {
+        // Barra superior simulada con un Text
+        Text(
+            text = "Ronda $currentRound/${rounds ?: 0}",
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(color = Color(0xFF051620))
+                .padding(16.dp),
+            color = Color.Black,
+            textAlign = TextAlign.Center
+        )
+
+    }
+    println("**********************************************************")
+    println("**********************************************************")
+    println(rounds)
+    println(currentRound)
+    println("**********************************************************")
+    println("**********************************************************")
+    LaunchedEffect(rounds) {
+        val questions = mutableListOf<QuestionModel>()
+        repeat(rounds ?: 0) {
+            val question = questionViewModel.getRandomQuestion(type)
+            if (question != null) { questions.add(question) }
+        }
+        questions.forEachIndexed { index, question ->
+            currentRound++ }
+    }
+
     println(" hola: $preguntaActual")
 
     LaunchedEffect(difficulty, type) {

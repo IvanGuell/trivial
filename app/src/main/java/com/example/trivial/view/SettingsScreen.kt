@@ -24,6 +24,7 @@ import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -57,6 +58,9 @@ fun SettingsScreen(navController: NavController, questionViewModel: QuestionView
 
         difficulty = difficultyDropDown(questionViewModel)
         type = typeDropDown(questionViewModel)
+        roundsRadioButton { selectedRounds ->
+            questionViewModel.setRounds(selectedRounds) }
+
         Button(
             modifier = Modifier
                 .padding(top = 46.dp),
@@ -218,31 +222,36 @@ fun HelpDialog(show: Boolean, onDismiss: () -> Unit, onConfirm: () -> Unit) {
 
 
 @Composable
-fun roundsRadioButton() {
-    val radioOptions = listOf("5", "10", "15")
-    val (selectedOption, onOptionSelected) = remember { mutableStateOf(radioOptions[1] ) }
+fun roundsRadioButton(onRoundSelected: (Int) -> Unit) {
+    val radioOptions = listOf(5, 10, 15)
+    val (selectedOption, onOptionSelected) = remember { mutableStateOf(radioOptions[1]) }
+
     Column {
-        radioOptions.forEach { text ->
+        radioOptions.forEach { rounds ->
             Row(
                 Modifier
                     .fillMaxWidth()
                     .selectable(
-                        selected = (text == selectedOption),
+                        selected = (rounds == selectedOption),
                         onClick = {
-                            onOptionSelected(text)
+                            onOptionSelected(rounds)
                         }
                     )
                     .padding(horizontal = 16.dp)
             ) {
                 RadioButton(
-                    selected = (text == selectedOption),
-                    onClick = { onOptionSelected(text) }
+                    selected = (rounds == selectedOption),
+                    onClick = { onOptionSelected(rounds) }
                 )
                 Text(
-                    text = text,
+                    text = rounds.toString(),
                     modifier = Modifier.padding(start = 16.dp)
                 )
             }
+        }
+
+        LaunchedEffect(selectedOption) {
+            onRoundSelected(selectedOption)
         }
     }
 }

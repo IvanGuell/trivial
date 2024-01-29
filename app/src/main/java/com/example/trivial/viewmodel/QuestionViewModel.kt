@@ -8,7 +8,7 @@ import com.example.trivial.model.QuestionModel
 
 class QuestionViewModel : ViewModel() {
     private val _actualQuestion = MutableLiveData<QuestionModel?>()
-    private val _rounds = MutableLiveData<Int>()
+    private val _rounds = MutableLiveData<Int>().apply { value = 10 }
     val actualQuestion: LiveData<QuestionModel?> get() = _actualQuestion
     val rounds: LiveData<Int> get() = _rounds
     fun setPreguntaActual(question: QuestionModel?) {
@@ -51,7 +51,9 @@ class QuestionViewModel : ViewModel() {
     fun changeGenre(genre: String) {
         this.genre = genre
     }
-
+    fun setRounds(selectedRounds: Int) {
+        _rounds.value = selectedRounds
+    }
     fun getRandomQuestion(genre: String): QuestionModel? {
         Log.i("DIFICULTAD", difficult)
         Log.i("GENRE", genre)
