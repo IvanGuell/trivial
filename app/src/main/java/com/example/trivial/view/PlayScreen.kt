@@ -57,15 +57,7 @@ fun PlayScreen(navController: NavController, questionViewModel: QuestionViewMode
     println(currentRound)
     println("**********************************************************")
     println("**********************************************************")
-    LaunchedEffect(rounds) {
-        val questions = mutableListOf<QuestionModel>()
-        repeat(rounds ?: 0) {
-            val question = questionViewModel.getRandomQuestion(type)
-            if (question != null) { questions.add(question) }
-        }
-        questions.forEachIndexed { index, question ->
-            currentRound++ }
-    }
+
 
     println(" hola: $preguntaActual")
 
@@ -125,7 +117,10 @@ fun AnswerButtons(answers: List<String>) {
         // Muestra botones para cada respuesta
         answers.forEach { answer ->
             Button(
-                onClick = {},
+                onClick = {
+
+
+                },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(56.dp),

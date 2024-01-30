@@ -161,7 +161,7 @@ fun typeDropDown(questionViewModel: QuestionViewModel): String {
             modifier = Modifier
                 .padding(16.dp)
         ) {
-            listOf("Historia", "Geografia", "Cine", "Todos").forEach { type ->
+            listOf("Historia", "Geografía", "Entretenimiento", "Deportes", "Arte y literatura",  "Todos").forEach { type ->
                 DropdownMenuItem(text = { Text(text = type) }, onClick = {
                     expanded = false
                     selectedText = type
