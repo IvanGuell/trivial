@@ -1,6 +1,10 @@
 package com.example.trivial.viewmodel
 
 import android.util.Log
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -15,6 +19,11 @@ class QuestionViewModel : ViewModel() {
     fun setPreguntaActual(question: QuestionModel?) {
         _actualQuestion.value = question
     }
+    private val _correctCounter = MutableLiveData<Int>().apply { value = 0 }
+    val correctCounter: LiveData<Int> get() = _correctCounter
+
+    private val _timerDuration = MutableLiveData<Int>().apply { value = 10 }
+    val timerDuration: LiveData<Int> get() = _timerDuration
 
     fun nextRound(){
 
@@ -40,5 +49,16 @@ class QuestionViewModel : ViewModel() {
             it.difficulty == difficult && (genre == "Todos" || it.type == genre)
         }
         return filteredQuestions.randomOrNull()
+    }
+
+    fun incrementCorrectCounter() {
+        _correctCounter.value = (_correctCounter.value ?: 0) + 1
+    }
+
+    fun resetCounters() {
+        _correctCounter.value = 0
+    }
+    fun setTimerDuration(duration: Int) {
+        _timerDuration.value = duration
     }
 }

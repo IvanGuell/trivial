@@ -21,11 +21,13 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.RadioButton
+import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -60,6 +62,8 @@ fun SettingsScreen(navController: NavController, questionViewModel: QuestionView
         type = typeDropDown(questionViewModel)
         roundsRadioButton { selectedRounds ->
             questionViewModel.setRounds(selectedRounds) }
+
+        timerSeekBar(questionViewModel)
 
         Button(
             modifier = Modifier
@@ -254,4 +258,30 @@ fun roundsRadioButton(onRoundSelected: (Int) -> Unit) {
             onRoundSelected(selectedOption)
         }
     }
+}
+
+
+@Composable
+fun timerSeekBar(questionViewModel: QuestionViewModel) {
+    val timerDuration by questionViewModel.timerDuration.observeAsState()
+
+    Slider(
+        value = timerDuration?.toFloat() ?: 10f,
+        onValueChange = { value ->
+            questionViewModel.setTimerDuration(value.toInt())
+        },
+        valueRange = 5f..20f,
+        steps = 1,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp)
+    )
+
+    Text(
+        text = "${timerDuration}s",
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = 16.dp, end = 16.dp, bottom = 8.dp),
+        textAlign = TextAlign.Center
+    )
 }
