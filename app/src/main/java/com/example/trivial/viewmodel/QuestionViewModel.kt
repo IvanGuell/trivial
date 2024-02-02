@@ -25,6 +25,10 @@ class QuestionViewModel : ViewModel() {
     private val _timerDuration = MutableLiveData<Int>().apply { value = 10 }
     val timerDuration: LiveData<Int> get() = _timerDuration
 
+    private var _progress = MutableLiveData<Float>().apply { value = 1f }
+    val progress: LiveData<Float> get() = _progress
+
+
     fun nextRound(){
 
 
@@ -60,5 +64,9 @@ class QuestionViewModel : ViewModel() {
     }
     fun setTimerDuration(duration: Int) {
         _timerDuration.value = duration
+    }
+
+    fun subProgressBar (substract: Float){
+        _progress.value = _progress.value?.minus(substract) ?: 1f
     }
 }

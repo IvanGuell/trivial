@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -33,6 +34,8 @@ import com.example.trivial.model.QuestionModel
 import com.example.trivial.viewmodel.QuestionViewModel
 import kotlinx.coroutines.delay
 import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.ui.tooling.preview.Preview
+import com.example.trivial.ui.theme.TrivialTheme
 
 
 @Composable
@@ -52,6 +55,8 @@ fun PlayScreen(navController: NavController, questionViewModel: QuestionViewMode
     val timerDuration by questionViewModel.timerDuration.observeAsState()
 
     var timeRemaining by remember { mutableStateOf(timerDuration ?: 10) }
+
+    val progress by questionViewModel.progress.observeAsState(1f)
 
     LaunchedEffect(timerDuration) {
         timeRemaining = timerDuration ?: 10
@@ -99,6 +104,7 @@ fun PlayScreen(navController: NavController, questionViewModel: QuestionViewMode
         if (preguntaActual != null) {
             // Muestra la pregunta y sus respuestas
             QuestionCard(preguntaActual!!)
+
             AnswerButtons(
                 preguntaActual = preguntaActual,
                 answers = preguntaActual!!.answers,
@@ -130,6 +136,13 @@ fun PlayScreen(navController: NavController, questionViewModel: QuestionViewMode
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
+            LinearProgressIndicator(
+                progress =  (progress),
+                modifier = Modifier
+                    .weight(1f)
+                    .width(25.dp),
+                color = Color.Blue
+            )
             CountdownTimer(
                 timeRemaining = timeRemaining,
                 onTimerFinish = {
@@ -138,16 +151,12 @@ fun PlayScreen(navController: NavController, questionViewModel: QuestionViewMode
                     questionViewModel.resetCounters()
 
                     timeRemaining = timerDuration ?: 10
-                }
+
+                },
+                questionViewModel
             )
 
-            LinearProgressIndicator(
-                progress = 1f - (timeRemaining.toFloat() / (timerDuration ?: 10).toFloat()), // Ajuste del progreso
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxWidth(),
-                color = Color.Black
-            )
+
         }
 
     }
@@ -216,24 +225,31 @@ fun checkIfAnswerIsCorrect(selectedAnswer: String, correctAnswer: String): Boole
 }
 
 @Composable
-fun CountdownTimer(timeRemaining: Int, onTimerFinish: () -> Unit) {
+fun CountdownTimer(timeRemaining: Int, onTimerFinish: () -> Unit,  questionViewModel: QuestionViewModel) {
     var currentTime by remember { mutableStateOf(timeRemaining) }
+    var substract by remember { mutableStateOf(1f / currentTime)}
 
     LaunchedEffect(currentTime) {
         while (currentTime > 0) {
             delay(1000)
             currentTime--
+            questionViewModel.subProgressBar(substract ?: 0f)
+            println("Current Time: $currentTime") // Add this line
         }
 
         // Se ejecuta cuando el temporizador llega a cero
         onTimerFinish()
+        questionViewModel.subProgressBar(substract)
     }
 
     Text(
         text = "$currentTime s",
         modifier = Modifier
-            .fillMaxWidth()
             .padding(16.dp),
         textAlign = TextAlign.Center
     )
 }
+
+
+
+
