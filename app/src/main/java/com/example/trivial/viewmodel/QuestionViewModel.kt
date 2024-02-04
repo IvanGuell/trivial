@@ -25,6 +25,10 @@ class QuestionViewModel : ViewModel() {
     private var _progress = MutableLiveData<Float>().apply { value = 1f }
     val progress: LiveData<Float> get() = _progress
 
+    private val _score = MutableLiveData<Int>().apply { value = 0 }
+    val score: LiveData<Int> get() = _score
+
+    private var scoreMultiplier = 1.0
 
     fun nextRound(){
 
@@ -49,11 +53,18 @@ class QuestionViewModel : ViewModel() {
         val filteredQuestions = QuestionProvider.listaDePreguntas.filter {
             it.difficulty == difficult && (genre == "Todos" || it.type == genre)
         }
-        return filteredQuestions.randomOrNull()
+
+        val newQuestion = filteredQuestions.randomOrNull()
+
+        // Actualizar el multiplicador según el nivel de dificultad
+        scoreMultiplier = getScoreMultiplier()
+
+        return newQuestion
     }
 
     fun incrementCorrectCounter() {
         _correctCounter.value = (_correctCounter.value ?: 0) + 1
+        incrementScore()
     }
 
     fun resetCounters() {
@@ -65,5 +76,20 @@ class QuestionViewModel : ViewModel() {
 
     fun subProgressBar (substract: Float){
         _progress.value = _progress.value?.minus(substract) ?: 1f
+    }
+    fun incrementScore() {
+        val scoreToAdd = (2 * scoreMultiplier).toInt()
+        _score.value = (_score.value ?: 0) + scoreToAdd
+    }
+    private fun getScoreMultiplier(): Double {
+        return when (difficult) {
+            "Fácil" -> 1.0
+            "Medio" -> 1.5
+            "Difícil" -> 2.0
+            else -> 1.0 // Manejo por defecto, por si el nivel no coincide con ninguno de los anteriores
+        }
+    }
+    fun resetScore() {
+        _score.value = 0
     }
 }

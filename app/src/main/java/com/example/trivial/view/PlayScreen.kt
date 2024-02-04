@@ -57,6 +57,13 @@ fun PlayScreen(navController: NavController, questionViewModel: QuestionViewMode
 
     val progress by questionViewModel.progress.observeAsState(1f)
 
+    val score = questionViewModel.score.observeAsState()
+
+    LaunchedEffect(questionViewModel) {
+        // Este bloque se ejecutará cuando el componente se active
+        questionViewModel.resetScore()
+    }
+
     LaunchedEffect(actualQuestion) {
         currentTime = timerDuration?: 10
 
@@ -95,6 +102,8 @@ fun PlayScreen(navController: NavController, questionViewModel: QuestionViewMode
             color = Color.Black,
             textAlign = TextAlign.Center
         )
+        Text(text = "Puntuación: ${score.value}")
+
 
         println("**********************************************************")
         println("**********************************************************")
@@ -203,10 +212,21 @@ fun AnswerButtons(
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         shuffledAnswers.forEach { answer ->
+
             Button(
                 onClick = {
                     val isCorrect = checkIfAnswerIsCorrect(answer, actualQuestion?.correctAnswer.orEmpty())
+                    println("KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK")
+                    println("KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK")
+                    println("KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK")
+                    println("Respuesta seleccionada: $answer")
+                    println("Respuesta correcta: ${actualQuestion?.correctAnswer}")
+                    println("KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK")
+                    println("KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK")
+                    println("KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK")
+
                     onAnswerSelected(isCorrect)
+
                 },
                 modifier = Modifier
                     .fillMaxWidth()
