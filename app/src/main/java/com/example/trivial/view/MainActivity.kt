@@ -27,12 +27,9 @@ class MainActivity : ComponentActivity() {
         val questionViewModel by viewModels<QuestionViewModel>()
         super.onCreate(savedInstanceState)
         setContent {
-            TrivialTheme(true) {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
+            TrivialTheme(
+                darkTheme = questionViewModel.colorModeOn,
+                content = {
                     val navigationController = rememberNavController()
                     NavHost(
                         navController = navigationController,
@@ -41,13 +38,12 @@ class MainActivity : ComponentActivity() {
                         composable(Routes.MenuScreen.route) { MenuScreen(navController = navigationController, questionViewModel) }
                         composable(Routes.PlayScreen.route) { PlayScreen(navController = navigationController, questionViewModel) }
                         composable(Routes.SettingsScreen.route) { SettingsScreen(navController = navigationController, questionViewModel) }
-                        composable(Routes.ResultScreen.route) { ResultScreen(navController = navigationController) }
+                        composable(Routes.ResultScreen.route) { ResultScreen(navController = navigationController, questionViewModel) }
                     }
                 }
-            }
+            )
         }
     }
 }
-
 
 

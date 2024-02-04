@@ -20,14 +20,28 @@ object QuestionProvider {
         QuestionModel("¿Cuál es la montaña más alta del mundo?", listOf("Monte Everest", "Monte Kilimanjaro", "Monte McKinley", "Monte Aconcagua"), "Monte Everest", "Geografía", "Fácil"),
         QuestionModel("¿En qué país se encuentra la Gran Barrera de Coral?", listOf("Australia", "Brasil", "México", "India"), "Australia", "Geografía", "Fácil"),
         QuestionModel("¿Cuál es el océano más grande del mundo?", listOf("Océano Pacífico", "Océano Atlántico", "Océano Índico", "Océano Antártico"), "Océano Pacífico", "Geografía", "Fácil"),
-        QuestionModel("¿Cuál es la capital de Corea del sur?", listOf("Tokio", "Pekín", "Seúl", "Bangkok"), "Tokio", "Geografía", "Fácil"),
+        QuestionModel("¿Cuál es la capital de Corea del sur?", listOf("Tokio", "Pekín", "Seúl", "Bangkok"), "Seúl", "Geografía", "Fácil"),
         QuestionModel("¿En qué país se encuentra la Torre Eiffel?", listOf("Francia", "Italia", "Alemania", "Reino Unido"), "Francia", "Geografía", "Fácil"),
         QuestionModel("¿Cuál es el lago más grande de América del Norte?", listOf("Lago Superior", "Lago Hurón", "Lago Míchigan", "Lago Ontario"), "Lago Superior", "Geografía", "Fácil"),
         QuestionModel("¿En qué continente se encuentra la selva amazónica?", listOf("América del Sur", "África", "Asia", "Oceanía"), "América del Sur", "Geografía", "Fácil"),
 
 
         //Historia facil
-
+        QuestionModel("¿Quién fue el primer presidente de Estados Unidos?", listOf("George Washington", "Thomas Jefferson", "Abraham Lincoln", "Pedro Sanchez"), "George Washington", "Historia", "Medio"),
+        QuestionModel("¿Quién fue el líder de la Revolución Rusa en 1917?", listOf("Vladimir Lenin", "Joseph Stalin", "Leon Trotsky", "Mikhail Gorbachev"), "Vladimir Lenin", "Historia", "Fácil"),
+        QuestionModel("¿En qué año finalizó la Segunda Guerra Mundial?", listOf("1943", "1945", "1947", "1950"), "1945", "Historia", "Fácil"),
+        QuestionModel("¿Quién fue el primer presidente de Estados Unidos?", listOf("Thomas Jefferson", "George Washington", "John Adams", "James Madison"), "George Washington", "Historia", "Fácil"),
+        QuestionModel("¿Cuál fue el evento que marcó el inicio de la Revolución Francesa en 1789?", listOf("La Toma de la Bastilla", "La Batalla de Waterloo", "La Marcha de Versalles", "El Asalto a la Conciergerie"), "La Toma de la Bastilla", "Historia", "Fácil"),
+        QuestionModel("¿Quién fue el líder de la independencia de la India en la década de 1940?", listOf("Jawaharlal Nehru", "Mahatma Gandhi", "Indira Gandhi", "Sardar Patel"), "Mahatma Gandhi", "Historia", "Fácil"),
+        QuestionModel("¿Qué evento histórico marcó el final de la Guerra Fría?", listOf("Caída del Muro de Berlín", "Crisis de los Misiles en Cuba", "Revolución Cubana", "Invasión de Normandía"), "Caída del Muro de Berlín", "Historia", "Fácil"),
+        QuestionModel("¿En qué año se firmó la Declaración de Independencia de los Estados Unidos?", listOf("1776", "1789", "1792", "1804"), "1776", "Historia", "Fácil"),
+        QuestionModel("¿Quién fue el líder de la Revolución China en 1949?", listOf("Chiang Kai-shek", "Sun Yat-sen", "Mao Zedong", "Deng Xiaoping"), "Mao Zedong", "Historia", "Fácil"),
+        QuestionModel("¿Cuál fue el tratado que puso fin a la Primera Guerra Mundial?", listOf("Tratado de Versalles", "Tratado de Trianon", "Tratado de Brest-Litovsk", "Tratado de Saint-Germain-en-Laye"), "Tratado de Versalles", "Historia", "Fácil"),
+        QuestionModel("¿En qué año se firmó la Declaración de Independencia de los Estados Unidos?", listOf("1776", "1789", "1792", "1804"), "1776", "Historia", "Fácil"),
+        QuestionModel("¿Quién fue el primer presidente de los Estados Unidos?", listOf("George Washington", "Thomas Jefferson", "John Adams", "James Madison"), "George Washington", "Historia", "Fácil"),
+        QuestionModel("¿Cuál fue la civilización que construyó las pirámides de Giza en Egipto?", listOf("Antiguo Egipto", "Mesopotamia", "Grecia Antigua", "Imperio Romano"), "Antiguo Egipto", "Historia", "Fácil"),
+        QuestionModel("¿En qué año comenzó la Primera Guerra Mundial?", listOf("1914", "1918", "1922", "1939"), "1914", "Historia", "Fácil"),
+        QuestionModel("¿Quién fue el líder de la Revolución Rusa de 1917?", listOf("Vladimir Lenin", "Joseph Stalin", "Leon Trotsky", "Nicholas II"), "Vladimir Lenin", "Historia", "Fácil"),
         QuestionModel("¿Cuál fue el evento que marcó el comienzo de la Revolución Americana en 1775?", listOf("Batalla de Lexington y Concord", "Batalla de Saratoga", "Declaración de Independencia", "Tratado de París"), "Batalla de Lexington y Concord", "Historia", "Fácil"),
         QuestionModel("¿En qué año finalizó la Segunda Guerra Mundial?", listOf("1945", "1940", "1942", "1948"), "1945", "Historia", "Fácil"),
         QuestionModel("¿En qué siglo tuvo lugar la Revolución Industrial?", listOf("Siglo XIX", "Siglo XVIII", "Siglo XX", "Siglo XVII"), "Siglo XIX", "Historia", "Fácil"),
@@ -142,7 +156,6 @@ object QuestionProvider {
 
 
         //Historia medio
-        QuestionModel("¿Quién fue el primer presidente de Estados Unidos?", listOf("George Washington", "Thomas Jefferson", "Abraham Lincoln", "Pedro Sanchez"), "George Washington", "Historia", "Medio"),
         QuestionModel("¿En qué año ocurrió la Revolución Rusa?", listOf("1917", "1923", "1905", "1939"), "1917", "Historia", "Medio"),
         QuestionModel("¿Quién fue el presidente de Estados Unidos durante la Guerra Civil Americana?", listOf("Abraham Lincoln", "Andrew Johnson", "Ulysses S. Grant", "James Buchanan"), "Abraham Lincoln", "Historia", "Medio"),
         QuestionModel("¿Qué líder político y militar francés lideró las fuerzas aliadas en la Batalla de Waterloo?", listOf("Napoleón Bonaparte", "Louis XIV", "Charles de Gaulle", "Louis Napoleon"), "Napoleón Bonaparte", "Historia", "Medio"),

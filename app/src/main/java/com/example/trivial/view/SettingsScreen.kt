@@ -6,8 +6,10 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -22,6 +24,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Slider
+import androidx.compose.material3.Switch
+import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -60,24 +64,63 @@ fun SettingsScreen(navController: NavController, questionViewModel: QuestionView
 
         difficulty = difficultyDropDown(questionViewModel)
         type = typeDropDown(questionViewModel)
+
+        Spacer(modifier = Modifier.height(32.dp))
+
+        Text(
+            text = "Segundos por ronda",
+            fontSize = 24.sp,
+        )
+        timerSeekBar(questionViewModel)
+
+        Text(
+            text = "Rondas",
+            fontSize = 24.sp,
+        )
         roundsRadioButton { selectedRounds ->
             questionViewModel.setRounds(selectedRounds) }
 
-        timerSeekBar(questionViewModel)
+        Row(verticalAlignment = Alignment.CenterVertically)
+        {
+            Text(
+                text = "Modo Oscuro",
+                fontSize = 24.sp,
+            )
+            Spacer(modifier = Modifier.width(32.dp))
+            switchColorMode(questionViewModel)
+        }
+
 
         Button(
             modifier = Modifier
+                .fillMaxWidth(0.4f)
                 .padding(top = 46.dp),
             onClick = { show = true },
             colors = ButtonDefaults.buttonColors(
-                containerColor = Color(0xFF051620)
+                containerColor = MaterialTheme.colorScheme.secondary,
+                contentColor = Color.White
             ),
             shape = RectangleShape
         ) {
             Text("Ayuda")
         }
         HelpDialog(show, { show = false }, { show = false })
+        Button(
+            modifier = Modifier
+                .fillMaxWidth(0.4f),
+            onClick = {
+                navController.navigate("menu_screen")
 
+            },
+            colors = ButtonDefaults.buttonColors(
+                containerColor = MaterialTheme.colorScheme.secondary,
+                contentColor = Color.White
+            ),
+            shape = RectangleShape
+
+        ) {
+            Text(text = "Volver al menu")
+        }
 
     }
 }
@@ -188,22 +231,17 @@ fun HelpDialog(show: Boolean, onDismiss: () -> Unit, onConfirm: () -> Unit) {
             text = {
                 Text(
                     text = """
-                              Se trata del ahorcado, 
-                              las mecanicas son simples 
-                              Solo debes introducir
-                              letras hasta acertar la palabra.
-                              
-                              Dificultad: Fácil
-                              Maximo 5 letras
-                                  10 fallos
-                                  
-                              Dificultad: Normal
-                              Maximo 8 letras
-                                  10 fallos
-                              
-                              Dificultad: Dificil
-                              Sin Maximo de letras
-                                   5 fallos
+                        Bienvenido a "En-quiz-tados". El objetivo es responder correctamente las preguntas seleccionando una de las cuatro opciones disponibles.
+
+                        Mecánicas del juego:
+                        - Selecciona la dificultad entre Fácil, Normal o Difícil.
+                        - Elige una categoría de preguntas entre Historia, Geografía, Entretenimiento, Deportes, Arte y literatura, o Todas.
+                        - Adivina la respuesta correcta entre las opciones proporcionadas.
+                        
+                        Personaliza tu experiencia:
+                        - Ajusta el temporizador deslizando el control deslizante.
+                        - Selecciona la cantidad de rondas que deseas jugar: 5, 10 o 15.
+                        - Activa o desactiva el modo oscuro según tus preferencias.
 
                                """.trimIndent(),
                     fontSize = 20.sp,
@@ -214,7 +252,7 @@ fun HelpDialog(show: Boolean, onDismiss: () -> Unit, onConfirm: () -> Unit) {
             confirmButton = {
                 TextButton(onClick = { onConfirm() }) {
                     Text(
-                        text = "Ok!",
+                        text = "Volver",
                         fontSize = 20.sp
                     )
                 }
@@ -271,7 +309,7 @@ fun timerSeekBar(questionViewModel: QuestionViewModel) {
             questionViewModel.setTimerDuration(value.toInt())
         },
         valueRange = 5f..20f,
-        steps = 1,
+        steps = 15,
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp)
@@ -284,4 +322,24 @@ fun timerSeekBar(questionViewModel: QuestionViewModel) {
             .padding(start = 16.dp, end = 16.dp, bottom = 8.dp),
         textAlign = TextAlign.Center
     )
+}
+@Composable
+fun switchColorMode(questionViewModel: QuestionViewModel) {
+    var checked by remember { mutableStateOf(false) }
+
+    Switch(
+        checked = checked,
+        onCheckedChange = {
+            checked = it
+            questionViewModel.changeColorMode(it)
+        },
+        colors = SwitchDefaults.colors(
+            checkedThumbColor = Color(0xFFDAE6F2),
+            checkedTrackColor = Color(0x4001224C),
+            uncheckedThumbColor = Color(0xFFDAE6F2),
+            uncheckedTrackColor = Color(0x4001224C)
+        ),
+
+        )
+
 }

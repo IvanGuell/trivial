@@ -2,6 +2,9 @@
 package com.example.trivial.viewmodel
 
 import android.util.Log
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -29,6 +32,7 @@ class QuestionViewModel : ViewModel() {
     val score: LiveData<Int> get() = _score
 
     private var scoreMultiplier = 1.0
+    var colorModeOn by mutableStateOf(false)
 
     fun nextRound(){
 
@@ -92,4 +96,8 @@ class QuestionViewModel : ViewModel() {
     fun resetScore() {
         _score.value = 0
     }
+    fun changeColorMode(isOn: Boolean) {
+        colorModeOn = isOn
+    }
+
 }

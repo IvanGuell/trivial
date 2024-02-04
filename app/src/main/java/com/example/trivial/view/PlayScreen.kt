@@ -59,11 +59,12 @@ fun PlayScreen(navController: NavController, questionViewModel: QuestionViewMode
 
     val score = questionViewModel.score.observeAsState()
 
+
+
+
     LaunchedEffect(questionViewModel) {
-        // Este bloque se ejecutará cuando el componente se active
         questionViewModel.resetScore()
     }
-
     LaunchedEffect(actualQuestion) {
         currentTime = timerDuration?: 10
 
@@ -85,6 +86,8 @@ fun PlayScreen(navController: NavController, questionViewModel: QuestionViewMode
         questionViewModel.subProgressBar(1f)
     }
 
+
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -105,17 +108,9 @@ fun PlayScreen(navController: NavController, questionViewModel: QuestionViewMode
         Text(text = "Puntuación: ${score.value}")
 
 
-        println("**********************************************************")
-        println("**********************************************************")
-        println(rounds)
-        println(currentRound)
-        println(correctCounter)
-
-        println("**********************************************************")
-        println("**********************************************************")
-
 
         println(" PREGUNTA ACTUAL: $actualQuestion")
+
         LaunchedEffect(difficulty, type) {
             val question = questionViewModel.getRandomQuestion(type)
             questionViewModel.setCurrentQuestion(question)
@@ -216,15 +211,6 @@ fun AnswerButtons(
             Button(
                 onClick = {
                     val isCorrect = checkIfAnswerIsCorrect(answer, actualQuestion?.correctAnswer.orEmpty())
-                    println("KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK")
-                    println("KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK")
-                    println("KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK")
-                    println("Respuesta seleccionada: $answer")
-                    println("Respuesta correcta: ${actualQuestion?.correctAnswer}")
-                    println("KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK")
-                    println("KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK")
-                    println("KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK")
-
                     onAnswerSelected(isCorrect)
 
                 },
@@ -254,8 +240,6 @@ fun checkIfAnswerIsCorrect(selectedAnswer: String, correctAnswer: String): Boole
 
 @Composable
 fun CountdownTimer(currentTime: Int) {
-
-
 
     Text(
         text = "$currentTime s",

@@ -23,8 +23,8 @@ private val DarkColorScheme = darkColorScheme(
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = Color.Black,
-    secondary = Color.White,
+    primary = Color.White,
+    secondary = Color.Black,
     tertiary = Color.DarkGray
 
     /* Other default colors to override
@@ -41,28 +41,12 @@ private val LightColorScheme = lightColorScheme(
 @Composable
 fun TrivialTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = true,
     content: @Composable () -> Unit
 ) {
-    val colorScheme = when {
-        /*dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-            val context = LocalContext.current
-            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
-        }
-
-         */
-
-        darkTheme -> DarkColorScheme
-        else -> LightColorScheme
-    }
-    val view = LocalView.current
-    if (!view.isInEditMode) {
-        SideEffect {
-            val window = (view.context as Activity).window
-            window.statusBarColor = colorScheme.primary.toArgb()
-            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
-        }
+    val colorScheme = if (darkTheme) {
+        DarkColorScheme
+    } else {
+        LightColorScheme
     }
 
     MaterialTheme(
@@ -70,4 +54,9 @@ fun TrivialTheme(
         typography = Typography,
         content = content
     )
+
+    val view = LocalView.current
+    val window = (view.context as Activity).window
+    window.statusBarColor = colorScheme.primary.toArgb()
+    WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = !darkTheme
 }
