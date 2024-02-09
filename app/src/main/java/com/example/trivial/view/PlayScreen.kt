@@ -33,7 +33,9 @@ import com.example.trivial.model.QuestionModel
 import com.example.trivial.viewmodel.QuestionViewModel
 import kotlinx.coroutines.delay
 import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.unit.max
+import java.util.logging.Handler
 import kotlin.concurrent.timer
 
 
@@ -207,18 +209,31 @@ fun AnswerButtons(
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         shuffledAnswers.forEach { answer ->
-
+            var color by remember { mutableStateOf(Color.DarkGray) }
+            var press by rememberSaveable { mutableStateOf(false) }
+            var isCorrect by rememberSaveable { mutableStateOf(false) }
             Button(
                 onClick = {
-                    val isCorrect = checkIfAnswerIsCorrect(answer, actualQuestion?.correctAnswer.orEmpty())
+                    press = true
+                    isCorrect = checkIfAnswerIsCorrect(answer, actualQuestion?.correctAnswer.orEmpty())
                     onAnswerSelected(isCorrect)
 
                 },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(56.dp),
-                colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.tertiary)
+                colors = ButtonDefaults.buttonColors(color)
             ) {
+                if (press) {
+                    if (isCorrect) color = Color.Green
+                    else color = Color.Red
+                    android.os.Handler().postDelayed({
+                        color = Color.DarkGray
+                        press = false
+
+                    },1500)
+
+                }
                 Text(
                     text = answer,
                     color = MaterialTheme.colorScheme.secondary

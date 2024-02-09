@@ -37,13 +37,18 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.paint
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.trivial.R
 import com.example.trivial.viewmodel.QuestionViewModel
 
 @Composable
@@ -53,77 +58,92 @@ fun SettingsScreen(navController: NavController, questionViewModel: QuestionView
     var show by remember { mutableStateOf(false) }
     var rounds by remember { mutableStateOf(questionViewModel.rounds ) }
 
-
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.White),
+            .paint(
+                painterResource(
+                    id = if (!questionViewModel.colorModeOn) R.drawable.claro else R.drawable.image
+                ), contentScale = ContentScale.FillBounds
+            ).scale(1f),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top
+
     ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize(),
 
-        difficulty = difficultyDropDown(questionViewModel)
-        type = typeDropDown(questionViewModel)
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Top
+        ) {
 
-        Spacer(modifier = Modifier.height(32.dp))
+            difficulty = difficultyDropDown(questionViewModel)
+            type = typeDropDown(questionViewModel)
 
-        Text(
-            text = "Segundos por ronda",
-            fontSize = 24.sp,
-        )
-        timerSeekBar(questionViewModel)
+            Spacer(modifier = Modifier.height(32.dp))
 
-        Text(
-            text = "Rondas",
-            fontSize = 24.sp,
-        )
-        roundsRadioButton { selectedRounds ->
-            questionViewModel.setRounds(selectedRounds) }
-
-        Row(verticalAlignment = Alignment.CenterVertically)
-        {
             Text(
-                text = "Modo Oscuro",
+                text = "Segundos por ronda",
+                fontSize = 24.sp,
+                color = MaterialTheme.colorScheme.secondary
+            )
+            timerSeekBar(questionViewModel)
+
+            Text(
+                text = "Rondas",
                 fontSize = 24.sp,
             )
-            Spacer(modifier = Modifier.width(32.dp))
-            switchColorMode(questionViewModel)
+            roundsRadioButton { selectedRounds ->
+                questionViewModel.setRounds(selectedRounds) }
+
+            Row(verticalAlignment = Alignment.CenterVertically)
+            {
+                Text(
+                    text = "Modo Oscuro",
+                    fontSize = 24.sp,
+                )
+                Spacer(modifier = Modifier.width(32.dp))
+                switchColorMode(questionViewModel)
+            }
+
+
+            Button(
+                modifier = Modifier
+                    .fillMaxWidth(0.4f)
+                    .padding(top = 46.dp),
+                onClick = { show = true },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.secondary,
+                    contentColor = Color.White
+                ),
+                shape = RectangleShape
+            ) {
+                Text("Ayuda")
+            }
+            HelpDialog(show, { show = false }, { show = false })
+            Button(
+                modifier = Modifier
+                    .fillMaxWidth(0.4f),
+                onClick = {
+                    navController.navigate("menu_screen")
+
+                },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.secondary,
+                    contentColor = Color.White
+                ),
+                shape = RectangleShape
+
+            ) {
+                Text(text = "Volver al menu")
+            }
+
         }
-
-
-        Button(
-            modifier = Modifier
-                .fillMaxWidth(0.4f)
-                .padding(top = 46.dp),
-            onClick = { show = true },
-            colors = ButtonDefaults.buttonColors(
-                containerColor = MaterialTheme.colorScheme.secondary,
-                contentColor = Color.White
-            ),
-            shape = RectangleShape
-        ) {
-            Text("Ayuda")
-        }
-        HelpDialog(show, { show = false }, { show = false })
-        Button(
-            modifier = Modifier
-                .fillMaxWidth(0.4f),
-            onClick = {
-                navController.navigate("menu_screen")
-
-            },
-            colors = ButtonDefaults.buttonColors(
-                containerColor = MaterialTheme.colorScheme.secondary,
-                contentColor = Color.White
-            ),
-            shape = RectangleShape
-
-        ) {
-            Text(text = "Volver al menu")
-        }
-
     }
 }
+
+
 
 
 @OptIn(ExperimentalMaterial3Api::class)

@@ -27,9 +27,11 @@ class MainActivity : ComponentActivity() {
         val questionViewModel by viewModels<QuestionViewModel>()
         super.onCreate(savedInstanceState)
         setContent {
-            TrivialTheme(
-                darkTheme = questionViewModel.colorModeOn,
-                content = {
+            TrivialTheme(questionViewModel.colorModeOn) {
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
+                ) {
                     val navigationController = rememberNavController()
                     NavHost(
                         navController = navigationController,
@@ -41,7 +43,7 @@ class MainActivity : ComponentActivity() {
                         composable(Routes.ResultScreen.route) { ResultScreen(navController = navigationController, questionViewModel) }
                     }
                 }
-            )
+            }
         }
     }
 }
