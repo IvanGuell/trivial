@@ -24,6 +24,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Slider
+import androidx.compose.material3.SliderColors
+import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
@@ -37,13 +39,18 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.paint
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.trivial.R
 import com.example.trivial.viewmodel.QuestionViewModel
 
 @Composable
@@ -57,7 +64,11 @@ fun SettingsScreen(navController: NavController, questionViewModel: QuestionView
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.White),
+        .paint(
+            painterResource(
+                id = if (!questionViewModel.colorModeOn) R.drawable.claro else R.drawable.image
+            ), contentScale = ContentScale.FillBounds
+    ).scale(1f),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top
     ) {
@@ -98,11 +109,12 @@ fun SettingsScreen(navController: NavController, questionViewModel: QuestionView
             onClick = { show = true },
             colors = ButtonDefaults.buttonColors(
                 containerColor = MaterialTheme.colorScheme.secondary,
-                contentColor = Color.White
+                contentColor = MaterialTheme.colorScheme.primary
             ),
             shape = RectangleShape
         ) {
-            Text("Ayuda")
+            Text("Ayuda",
+                color = MaterialTheme.colorScheme.primary)
         }
         HelpDialog(show, { show = false }, { show = false })
         Button(
@@ -114,12 +126,13 @@ fun SettingsScreen(navController: NavController, questionViewModel: QuestionView
             },
             colors = ButtonDefaults.buttonColors(
                 containerColor = MaterialTheme.colorScheme.secondary,
-                contentColor = Color.White
+                contentColor = MaterialTheme.colorScheme.primary
             ),
             shape = RectangleShape
 
         ) {
-            Text(text = "Volver al menu")
+            Text(text = "Volver al menu",
+                color = MaterialTheme.colorScheme.primary)
         }
 
     }
@@ -149,7 +162,7 @@ fun difficultyDropDown(questionViewModel: QuestionViewModel): String {
                     .width(300.dp),
                 textStyle = TextStyle(
                     fontSize = 26.sp,
-                    color = Color.Black,
+                    color = MaterialTheme.colorScheme.secondary,
                     textAlign = TextAlign.Center
                 ),
             )
@@ -198,7 +211,7 @@ fun typeDropDown(questionViewModel: QuestionViewModel): String {
 
             textStyle = TextStyle(
                 fontSize = 26.sp,
-                color = Color.Black,
+                color = MaterialTheme.colorScheme.secondary,
                 textAlign = TextAlign.Center
             ),
         )
@@ -253,6 +266,7 @@ fun HelpDialog(show: Boolean, onDismiss: () -> Unit, onConfirm: () -> Unit) {
                 TextButton(onClick = { onConfirm() }) {
                     Text(
                         text = "Volver",
+                        color = MaterialTheme.colorScheme.onSurface,
                         fontSize = 20.sp
                     )
                 }
@@ -312,7 +326,10 @@ fun timerSeekBar(questionViewModel: QuestionViewModel) {
         steps = 15,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp)
+            .padding(16.dp),
+        colors = SliderDefaults.colors(
+            thumbColor = MaterialTheme.colorScheme.tertiary
+        )
     )
 
     Text(
@@ -325,10 +342,10 @@ fun timerSeekBar(questionViewModel: QuestionViewModel) {
 }
 @Composable
 fun switchColorMode(questionViewModel: QuestionViewModel) {
-    var checked by remember { mutableStateOf(false) }
+    var checked by remember { mutableStateOf(questionViewModel.colorModeOn) }
 
     Switch(
-        checked = checked,
+        checked = questionViewModel.colorModeOn,
         onCheckedChange = {
             checked = it
             questionViewModel.changeColorMode(it)
@@ -339,7 +356,7 @@ fun switchColorMode(questionViewModel: QuestionViewModel) {
             uncheckedThumbColor = Color(0xFFDAE6F2),
             uncheckedTrackColor = Color(0x4001224C)
         ),
+    )
 
-        )
 
 }

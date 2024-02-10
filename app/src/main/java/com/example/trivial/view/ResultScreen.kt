@@ -10,13 +10,18 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.paint
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat.startActivity
 import androidx.navigation.NavController
+import com.example.trivial.R
 import com.example.trivial.viewmodel.QuestionViewModel
 
 @Composable
@@ -26,7 +31,11 @@ fun ResultScreen(navController: NavController, questionViewModel: QuestionViewMo
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.White),
+            .paint(
+                painterResource(
+                    id = if (!questionViewModel.colorModeOn) R.drawable.claro else R.drawable.image
+                ), contentScale = ContentScale.FillBounds
+            ).scale(1f),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -54,10 +63,11 @@ fun ResultScreen(navController: NavController, questionViewModel: QuestionViewMo
                 },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = MaterialTheme.colorScheme.secondary,
-                    contentColor = Color.White
+                    contentColor = MaterialTheme.colorScheme.primary
                 )
             ) {
-                Text(text = "Volver a Jugar")
+                Text(text = "Volver a Jugar",
+                    color = MaterialTheme.colorScheme.primary)
             }
             Button(
                 onClick = {
@@ -66,10 +76,12 @@ fun ResultScreen(navController: NavController, questionViewModel: QuestionViewMo
                 },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = MaterialTheme.colorScheme.secondary,
-                    contentColor = Color.White
+                    contentColor = MaterialTheme.colorScheme.primary
                 )
             ) {
-                Text(text = "Volver al menu")
+                Text(text = "Volver al menu",
+                    color = MaterialTheme.colorScheme.primary)
+
             }
         }
         Spacer(modifier = Modifier.height(16.dp))
@@ -92,10 +104,12 @@ fun ShareButton(text: String) {
         },
         colors = ButtonDefaults.buttonColors(
             containerColor = MaterialTheme.colorScheme.secondary,
-            contentColor = Color.White
+            contentColor = MaterialTheme.colorScheme.primary
         )
     ) {
         Icon(imageVector = Icons.Default.Share, contentDescription = "Compartir")
-        Text("Compartir", modifier = Modifier.padding(start = 8.dp))
+        Text("Compartir",
+            color = MaterialTheme.colorScheme.primary,
+            modifier = Modifier.padding(start = 8.dp))
     }
 }

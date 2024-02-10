@@ -4,6 +4,8 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -30,16 +32,23 @@ class MainActivity : ComponentActivity() {
             TrivialTheme(
                 darkTheme = questionViewModel.colorModeOn,
                 content = {
-                    val navigationController = rememberNavController()
-                    NavHost(
-                        navController = navigationController,
-                        startDestination = Routes.MenuScreen.route
-                    ) {
-                        composable(Routes.MenuScreen.route) { MenuScreen(navController = navigationController, questionViewModel) }
-                        composable(Routes.PlayScreen.route) { PlayScreen(navController = navigationController, questionViewModel) }
-                        composable(Routes.SettingsScreen.route) { SettingsScreen(navController = navigationController, questionViewModel) }
-                        composable(Routes.ResultScreen.route) { ResultScreen(navController = navigationController, questionViewModel) }
+                    Box(modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)
+
+                    ){
+                        val navigationController = rememberNavController()
+
+                        NavHost(
+                            navController = navigationController,
+                            startDestination = Routes.MenuScreen.route
+                        ) {
+                            composable(Routes.MenuScreen.route) { MenuScreen(navController = navigationController, questionViewModel) }
+                            composable(Routes.PlayScreen.route) { PlayScreen(navController = navigationController, questionViewModel) }
+                            composable(Routes.SettingsScreen.route) { SettingsScreen(navController = navigationController, questionViewModel) }
+                            composable(Routes.ResultScreen.route) { ResultScreen(navController = navigationController, questionViewModel) }
+                        }
                     }
+
+
                 }
             )
         }

@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -23,14 +24,19 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.paint
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.trivial.R
 import com.example.trivial.viewmodel.QuestionViewModel
 
 // ...
@@ -51,7 +57,11 @@ fun MenuScreen(navController: NavController, questionViewModel: QuestionViewMode
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.White),
+            .paint(
+                painterResource(
+                    id = if (!questionViewModel.colorModeOn) R.drawable.claro else R.drawable.image
+                ), contentScale = ContentScale.FillBounds
+            ).scale(1f),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
@@ -64,7 +74,7 @@ fun MenuScreen(navController: NavController, questionViewModel: QuestionViewMode
                 |tados""".trimMargin(),
             fontSize = 60.sp,
             fontWeight = FontWeight.SemiBold,
-            color = Color.Black,
+            color = MaterialTheme.colorScheme.secondary,
             textAlign = TextAlign.Center,
             fontFamily = hangingLetter,
             letterSpacing = 2.sp
@@ -90,7 +100,7 @@ fun MenuScreen(navController: NavController, questionViewModel: QuestionViewMode
                 ) {
                     Text(
                         text = "Ajustes",
-                        color = Color.White
+                        color = MaterialTheme.colorScheme.primary
                     )
                 }
 
@@ -109,7 +119,7 @@ fun MenuScreen(navController: NavController, questionViewModel: QuestionViewMode
                 ) {
                     Text(
                         text = "Jugar!",
-                        color = Color.White
+                        color = MaterialTheme.colorScheme.primary
                     )
                 }
             }
@@ -123,13 +133,13 @@ fun MenuScreen(navController: NavController, questionViewModel: QuestionViewMode
                     navController.navigate("settings_screen")
                 },
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFF051620)
+                    containerColor = MaterialTheme.colorScheme.onBackground
                 ),
                 shape = RectangleShape
             ) {
                 Text(
                     text = "Ajustes",
-                    color = Color.White
+                    color = MaterialTheme.colorScheme.primary
                 )
             }
 
@@ -137,7 +147,7 @@ fun MenuScreen(navController: NavController, questionViewModel: QuestionViewMode
                 modifier = Modifier
                     .fillMaxWidth(0.3f),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFF051620)
+                    containerColor = MaterialTheme.colorScheme.onBackground
                 ),
                 onClick = {
                     navController.navigate("play_screen")
@@ -146,7 +156,7 @@ fun MenuScreen(navController: NavController, questionViewModel: QuestionViewMode
             ) {
                 Text(
                     text = "Jugar!",
-                    color = Color.White
+                    color = MaterialTheme.colorScheme.primary
                 )
             }
         }

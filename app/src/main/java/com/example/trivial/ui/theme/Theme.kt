@@ -19,20 +19,33 @@ import androidx.core.view.WindowCompat
 private val DarkColorScheme = darkColorScheme(
     primary = Color.Black,
     secondary = Color.White,
-    tertiary = Color.DarkGray
+    tertiary = Color.DarkGray,
+    background = Color.Black,
+    surface = Color.Black,
+    onPrimary = Color.White,
+    onSecondary = Color.Black,
+    onTertiary = Color.Black,
+    onBackground = Color.White,
+    onSurface = Color.White
 )
 
 private val LightColorScheme = lightColorScheme(
     primary = Color.White,
     secondary = Color.Black,
-    tertiary = Color.DarkGray
-
+    tertiary = Color.DarkGray,
+    background = Color.White,
+    surface = Color.White,
+    onPrimary = Color.Black,
+    onSecondary = Color.White,
+    onTertiary = Color.White,
+    onBackground = Color.Black,
+    onSurface = Color.Black
     /* Other default colors to override
     background = Color(0xFFFFFBFE),
     surface = Color(0xFFFFFBFE),
-    onPrimary = Color.White,
-    onSecondary = Color.White,
-    onTertiary = Color.White,
+    onPrimary = MaterialTheme.colorScheme.primary,
+    onSecondary = MaterialTheme.colorScheme.primary,
+    onTertiary = MaterialTheme.colorScheme.primary,
     onBackground = Color(0xFF1C1B1F),
     onSurface = Color(0xFF1C1B1F),
     */
@@ -48,10 +61,14 @@ fun TrivialTheme(
     } else {
         LightColorScheme
     }
-
+    val typography = if (darkTheme) {
+        darkTypography
+    } else {
+        lightTypography
+    }
     MaterialTheme(
         colorScheme = colorScheme,
-        typography = Typography,
+        typography = typography,
         content = content
     )
 

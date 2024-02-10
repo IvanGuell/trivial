@@ -2,9 +2,17 @@
 package com.example.trivial.viewmodel
 
 import android.util.Log
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Card
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -52,8 +60,7 @@ class QuestionViewModel : ViewModel() {
         _rounds.value = selectedRounds
     }
     fun getRandomQuestion(genre: String): QuestionModel? {
-        Log.i("DIFICULTAD", difficult)
-        Log.i("GENRE", genre)
+
         val filteredQuestions = QuestionProvider.listaDePreguntas.filter {
             it.difficulty == difficult && (genre == "Todos" || it.type == genre)
         }
