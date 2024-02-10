@@ -40,6 +40,7 @@ class QuestionViewModel : ViewModel() {
     val score: LiveData<Int> get() = _score
 
     private var scoreMultiplier = 1.0
+
     var colorModeOn by mutableStateOf(false)
 
     fun nextRound(){
@@ -97,7 +98,7 @@ class QuestionViewModel : ViewModel() {
             "Fácil" -> 1.0
             "Medio" -> 1.5
             "Difícil" -> 2.0
-            else -> 1.0 // Manejo por defecto, por si el nivel no coincide con ninguno de los anteriores
+            else -> 1.0
         }
     }
     fun resetScore() {
