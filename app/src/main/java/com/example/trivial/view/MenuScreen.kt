@@ -45,43 +45,114 @@ fun MenuScreen(navController: NavController, questionViewModel: QuestionViewMode
     val configuration = LocalConfiguration.current
     val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .paint(
-                painterResource(
-                    id = if (!questionViewModel.colorModeOn) R.drawable.claro else R.drawable.image
-                ), contentScale = ContentScale.FillBounds
-            )
-            .scale(1f),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(
-            text = """En
+
+
+        if (isLandscape) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .paint(
+                        painterResource(
+                            id = if (!questionViewModel.colorModeOn) R.drawable.claro else R.drawable.image
+                        ), contentScale = ContentScale.FillBounds
+                    )
+                    .scale(1f),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    text = """En
                 | 
                 | 
                 | quiz 
                 |      
                 |      
                 |tados""".trimMargin(),
-            fontSize = 60.sp,
-            fontWeight = FontWeight.SemiBold,
-            color = MaterialTheme.colorScheme.secondary,
-            textAlign = TextAlign.Center,
-            fontFamily = hangingLetter,
-            letterSpacing = 2.sp
-        )
+                    fontSize = 60.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    color = MaterialTheme.colorScheme.secondary,
+                    textAlign = TextAlign.Center,
+                    fontFamily = hangingLetter,
+                    letterSpacing = 2.sp,
+                )
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    Button(
+                        modifier = Modifier
+                            .weight(1f)
+                            .padding(start = 50.dp, top = 10.dp),
+                        onClick = {
+                            navController.navigate("settings_screen")
+                        },
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = MaterialTheme.colorScheme.onBackground
+                        ),
+                        shape = RectangleShape
+                    ) {
+                        Text(
+                            text = "Ajustes",
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                    }
 
-        if (isLandscape) {
-            Row(
+                    Spacer(modifier = Modifier.width(32.dp))
+
+                    Button(
+                        modifier = Modifier
+                            .weight(1f)
+                            .padding(end = 50.dp, top = 10.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = MaterialTheme.colorScheme.onBackground
+                        ),
+                        onClick = {
+                            navController.navigate("play_screen")
+                        },
+                        shape = RectangleShape
+                    ) {
+                        Text(
+                            text = "Jugar",
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                    }
+                }
+            }
+        } else {
+
+            Column(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
-                horizontalArrangement = Arrangement.Center
+                    .fillMaxSize()
+                    .paint(
+                        painterResource(
+                            id = if (!questionViewModel.colorModeOn) R.drawable.claro else R.drawable.image
+                        ), contentScale = ContentScale.FillBounds
+                    )
+                    .scale(1f),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
+                Text(
+                    text = """En
+                | 
+                | 
+                | quiz 
+                |      
+                |      
+                |tados""".trimMargin(),
+                    fontSize = 60.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    color = MaterialTheme.colorScheme.secondary,
+                    textAlign = TextAlign.Center,
+                    fontFamily = hangingLetter,
+                    letterSpacing = 2.sp,
+                    modifier = Modifier.padding(top = 120.dp)
+                )
                 Button(
                     modifier = Modifier
-                        .fillMaxWidth(0.25f),
+                        .padding(top = 100.dp)
+                        .width(120.dp),
+
                     onClick = {
                         navController.navigate("settings_screen")
                     },
@@ -96,11 +167,10 @@ fun MenuScreen(navController: NavController, questionViewModel: QuestionViewMode
                     )
                 }
 
-                Spacer(modifier = Modifier.width(32.dp))
-
                 Button(
                     modifier = Modifier
-                        .fillMaxWidth(0.3f),
+                        .padding(top = 10.dp)
+                        .width(120.dp),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.onBackground
                     ),
@@ -115,44 +185,9 @@ fun MenuScreen(navController: NavController, questionViewModel: QuestionViewMode
                     )
                 }
             }
-        } else {
-            Button(
-                modifier = Modifier
-                    .padding(46.dp)
-                    .fillMaxWidth(0.4f),
-                onClick = {
-                    navController.navigate("settings_screen")
-                },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.onBackground
-                ),
-                shape = RectangleShape
-            ) {
-                Text(
-                    text = "Ajustes",
-                    color = MaterialTheme.colorScheme.primary
-                )
-            }
-
-            Button(
-                modifier = Modifier
-                    .fillMaxWidth(0.3f),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.onBackground
-                ),
-                onClick = {
-                    navController.navigate("play_screen")
-                },
-                shape = RectangleShape
-            ) {
-                Text(
-                    text = "Jugar!",
-                    color = MaterialTheme.colorScheme.primary
-                )
-            }
         }
     }
-}
+
 
 
 

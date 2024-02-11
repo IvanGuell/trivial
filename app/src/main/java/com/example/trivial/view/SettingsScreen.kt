@@ -1,5 +1,6 @@
 package com.example.trivial.view
 
+import android.content.res.Configuration
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -42,6 +43,7 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
@@ -56,8 +58,107 @@ fun SettingsScreen(navController: NavController, questionViewModel: QuestionView
     var difficulty by remember { mutableStateOf(questionViewModel.difficult) }
     var type by remember { mutableStateOf(questionViewModel.genre) }
     var show by remember { mutableStateOf(false) }
+    val configuration = LocalConfiguration.current
+    val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
+
+    if (isLandscape) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .paint(
+                    painterResource(
+                        id = if (!questionViewModel.colorModeOn) R.drawable.claro else R.drawable.image
+                    ), contentScale = ContentScale.FillBounds
+                )
+                .scale(1f),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Top
+        ) {
+            Row {
+
+                Text(
+                    text = "Rondas",
+                    fontSize = 24.sp,
+                )
+                roundsRadioButton { selectedRounds ->
+                    questionViewModel.setRounds(selectedRounds)
+                }
+                Column (
+                    modifier = Modifier.padding(start = 96.dp)
+                ){
 
 
+                    difficulty = difficultyDropDown(questionViewModel)
+                    type = typeDropDown(questionViewModel)
+                }
+
+            }
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    text = "Segundos por ronda",
+                    fontSize = 24.sp,
+                    modifier = Modifier.padding(top = 10.dp)
+                )
+                timerSeekBar(questionViewModel)
+            }
+
+
+            Row(verticalAlignment = Alignment.CenterVertically)
+            {
+                Text(
+                    text = "Modo Oscuro",
+                    fontSize = 24.sp,
+                )
+                Spacer(modifier = Modifier.width(42.dp))
+                switchColorMode(questionViewModel)
+            }
+            Row {
+
+
+                Button(
+                    onClick = { show = true },
+                    modifier = Modifier
+                        .padding(start = 30.dp, end = 30.dp)
+                        .weight(0.5f),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.secondary,
+                        contentColor = MaterialTheme.colorScheme.primary
+                    ),
+                    shape = RectangleShape
+                ) {
+                    Text(
+                        "Ayuda",
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                }
+                HelpDialog(show, { show = false }, { show = false })
+                Button(
+                    onClick = {
+                        navController.navigate("menu_screen")
+
+                    },
+                    modifier = Modifier
+                        .padding(end = 30.dp)
+                        .weight(0.5f),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.secondary,
+                        contentColor = MaterialTheme.colorScheme.primary
+                    ),
+                    shape = RectangleShape
+
+                ) {
+                    Text(
+                        text = "Volver al menu",
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                }
+            }
+
+        }
+    } else {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -140,6 +241,7 @@ fun SettingsScreen(navController: NavController, questionViewModel: QuestionView
 
     }
 }
+}
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -204,40 +306,43 @@ fun typeDropDown(questionViewModel: QuestionViewModel): String {
         modifier = Modifier
             .offset(y = (10).dp)
     ) {
-        OutlinedTextField(
-            value = selectedText,
-            onValueChange = { selectedText = it },
-            enabled = false,
-            readOnly = true,
-            modifier = Modifier
-                .clickable { expanded = true }
-                .width(300.dp),
+        Box {
+            OutlinedTextField(
+                value = selectedText,
+                onValueChange = { selectedText = it },
+                enabled = false,
+                readOnly = true,
+                modifier = Modifier
+                    .clickable { expanded = true }
+                    .width(300.dp),
 
-            textStyle = TextStyle(
-                fontSize = 26.sp,
-                color = MaterialTheme.colorScheme.secondary,
-                textAlign = TextAlign.Center
-            ),
-        )
-        DropdownMenu(
-            expanded = expanded,
-            onDismissRequest = { expanded = false },
-            modifier = Modifier
-                .padding(16.dp)
-        ) {
-            listOf(
-                "Historia",
-                "Geografía",
-                "Entretenimiento",
-                "Deportes",
-                "Arte y literatura",
-                "Todos"
-            ).forEach { type ->
-                DropdownMenuItem(text = { Text(text = type) }, onClick = {
-                    expanded = false
-                    selectedText = type
-                    questionViewModel.changeGenre(selectedText)
-                })
+                textStyle = TextStyle(
+                    fontSize = 26.sp,
+                    color = MaterialTheme.colorScheme.secondary,
+                    textAlign = TextAlign.Center
+                ),
+            )
+            DropdownMenu(
+                expanded = expanded,
+                onDismissRequest = { expanded = false },
+                modifier = Modifier
+                    .width(300.dp)
+
+            ) {
+                listOf(
+                    "Historia",
+                    "Geografía",
+                    "Entretenimiento",
+                    "Deportes",
+                    "Arte y literatura",
+                    "Todos"
+                ).forEach { type ->
+                    DropdownMenuItem(text = { Text(text = type) }, onClick = {
+                        expanded = false
+                        selectedText = type
+                        questionViewModel.changeGenre(selectedText)
+                    })
+                }
             }
         }
     }
@@ -245,7 +350,6 @@ fun typeDropDown(questionViewModel: QuestionViewModel): String {
 }
 
 @Composable
-
 fun HelpDialog(show: Boolean, onDismiss: () -> Unit, onConfirm: () -> Unit) {
 
     if (show) {
@@ -291,7 +395,38 @@ fun HelpDialog(show: Boolean, onDismiss: () -> Unit, onConfirm: () -> Unit) {
 fun roundsRadioButton(onRoundSelected: (Int) -> Unit) {
     val radioOptions = listOf(5, 10, 15)
     val (selectedOption, onOptionSelected) = remember { mutableStateOf(radioOptions[1]) }
+    val configuration = LocalConfiguration.current
+    val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
 
+    if (isLandscape) {
+        Column {
+            radioOptions.forEach { rounds ->
+                Row(
+                    Modifier
+                        .selectable(
+                            selected = (rounds == selectedOption),
+                            onClick = {
+                                onOptionSelected(rounds)
+                            }
+                        )
+                        .padding(horizontal = 16.dp)
+                ) {
+                    RadioButton(
+                        selected = (rounds == selectedOption),
+                        onClick = { onOptionSelected(rounds) }
+                    )
+                    Text(
+                        text = rounds.toString(),
+                        modifier = Modifier.padding(start = 16.dp)
+                    )
+                }
+            }
+
+            LaunchedEffect(selectedOption) {
+                onRoundSelected(selectedOption)
+            }
+        }
+} else {
     Column {
         radioOptions.forEach { rounds ->
             Row(
@@ -321,34 +456,64 @@ fun roundsRadioButton(onRoundSelected: (Int) -> Unit) {
         }
     }
 }
+}
 
 
 @Composable
 fun timerSeekBar(questionViewModel: QuestionViewModel) {
     val timerDuration by questionViewModel.timerDuration.observeAsState()
+    val configuration = LocalConfiguration.current
+    val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
 
-    Slider(
-        value = timerDuration?.toFloat() ?: 10f,
-        onValueChange = { value ->
-            questionViewModel.setTimerDuration(value.toInt())
-        },
-        valueRange = 5f..20f,
-        steps = 15,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp),
-        colors = SliderDefaults.colors(
-            thumbColor = MaterialTheme.colorScheme.tertiary
+    if (isLandscape) {
+        Row {
+
+
+            Slider(
+                value = timerDuration?.toFloat() ?: 10f,
+                onValueChange = { value ->
+                    questionViewModel.setTimerDuration(value.toInt())
+                },
+                valueRange = 5f..20f,
+                steps = 15,
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(start = 36.dp, end = 36.dp),
+                colors = SliderDefaults.colors(
+                    thumbColor = MaterialTheme.colorScheme.tertiary
+                )
+            )
+
+            Text(
+                text = "${timerDuration}s",
+                modifier = Modifier
+                    .padding(end = 36.dp, top = 10.dp),
+            )
+        }
+    } else {
+        Slider(
+            value = timerDuration?.toFloat() ?: 10f,
+            onValueChange = { value ->
+                questionViewModel.setTimerDuration(value.toInt())
+            },
+            valueRange = 5f..20f,
+            steps = 15,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 36.dp, end = 36.dp),
+            colors = SliderDefaults.colors(
+                thumbColor = MaterialTheme.colorScheme.tertiary
+            )
         )
-    )
 
-    Text(
-        text = "${timerDuration}s",
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(start = 16.dp, end = 16.dp, bottom = 8.dp),
-        textAlign = TextAlign.Center
-    )
+        Text(
+            text = "${timerDuration}s",
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 16.dp, end = 16.dp, bottom = 8.dp),
+            textAlign = TextAlign.Center
+        )
+    }
 }
 
 @Composable
