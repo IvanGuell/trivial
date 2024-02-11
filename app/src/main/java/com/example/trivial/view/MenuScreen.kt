@@ -86,7 +86,7 @@ fun MenuScreen(navController: NavController, questionViewModel: QuestionViewMode
                         navController.navigate("settings_screen")
                     },
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = Color(0xFF051620)
+                        containerColor = MaterialTheme.colorScheme.onBackground
                     ),
                     shape = RectangleShape
                 ) {
@@ -102,7 +102,7 @@ fun MenuScreen(navController: NavController, questionViewModel: QuestionViewMode
                     modifier = Modifier
                         .fillMaxWidth(0.3f),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = Color(0xFF051620)
+                        containerColor = MaterialTheme.colorScheme.onBackground
                     ),
                     onClick = {
                         navController.navigate("play_screen")

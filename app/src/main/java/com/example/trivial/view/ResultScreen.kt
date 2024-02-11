@@ -42,7 +42,7 @@ fun ResultScreen(navController: NavController, questionViewModel: QuestionViewMo
             text = "¡Enhorabuena!",
             fontSize = 30.sp,
             fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.tertiary
+            color = MaterialTheme.colorScheme.secondary
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -50,7 +50,7 @@ fun ResultScreen(navController: NavController, questionViewModel: QuestionViewMo
         Text(
             text = "Tu puntuación es: $score",
             fontSize = 24.sp,
-            color = MaterialTheme.colorScheme.tertiary
+            color = MaterialTheme.colorScheme.secondary
         )
 
         Spacer(modifier = Modifier.height(32.dp))
