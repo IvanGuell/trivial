@@ -1,7 +1,6 @@
 package com.example.trivial.view
 
 import android.content.Intent
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Share
@@ -12,7 +11,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.paint
 import androidx.compose.ui.draw.scale
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -35,7 +33,8 @@ fun ResultScreen(navController: NavController, questionViewModel: QuestionViewMo
                 painterResource(
                     id = if (!questionViewModel.colorModeOn) R.drawable.claro else R.drawable.image
                 ), contentScale = ContentScale.FillBounds
-            ).scale(1f),
+            )
+            .scale(1f),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -66,8 +65,10 @@ fun ResultScreen(navController: NavController, questionViewModel: QuestionViewMo
                     contentColor = MaterialTheme.colorScheme.primary
                 )
             ) {
-                Text(text = "Volver a Jugar",
-                    color = MaterialTheme.colorScheme.primary)
+                Text(
+                    text = "Volver a Jugar",
+                    color = MaterialTheme.colorScheme.primary
+                )
             }
             Button(
                 onClick = {
@@ -79,8 +80,10 @@ fun ResultScreen(navController: NavController, questionViewModel: QuestionViewMo
                     contentColor = MaterialTheme.colorScheme.primary
                 )
             ) {
-                Text(text = "Volver al menu",
-                    color = MaterialTheme.colorScheme.primary)
+                Text(
+                    text = "Volver al menu",
+                    color = MaterialTheme.colorScheme.primary
+                )
 
             }
         }
@@ -90,6 +93,7 @@ fun ResultScreen(navController: NavController, questionViewModel: QuestionViewMo
 
     }
 }
+
 @Composable
 fun ShareButton(text: String) {
     val context = LocalContext.current
@@ -108,8 +112,10 @@ fun ShareButton(text: String) {
         )
     ) {
         Icon(imageVector = Icons.Default.Share, contentDescription = "Compartir")
-        Text("Compartir",
+        Text(
+            "Compartir",
             color = MaterialTheme.colorScheme.primary,
-            modifier = Modifier.padding(start = 8.dp))
+            modifier = Modifier.padding(start = 8.dp)
+        )
     }
 }

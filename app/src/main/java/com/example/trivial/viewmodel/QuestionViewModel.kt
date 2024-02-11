@@ -1,18 +1,9 @@
-
 package com.example.trivial.viewmodel
 
-import android.util.Log
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Card
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -27,39 +18,34 @@ class QuestionViewModel : ViewModel() {
     fun setCurrentQuestion(question: QuestionModel?) {
         _actualQuestion.value = question
     }
-    private val _correctCounter = MutableLiveData<Int>().apply { value = 0 }
-    val correctCounter: LiveData<Int> get() = _correctCounter
 
+    private val _correctCounter = MutableLiveData<Int>().apply { value = 0 }
     private val _timerDuration = MutableLiveData<Int>().apply { value = 10 }
     val timerDuration: LiveData<Int> get() = _timerDuration
-
     private var _progress = MutableLiveData<Float>().apply { value = 1f }
-    val progress: LiveData<Float> get() = _progress
-
     private val _score = MutableLiveData<Int>().apply { value = 0 }
     val score: LiveData<Int> get() = _score
-
     private var scoreMultiplier = 1.0
-
     var colorModeOn by mutableStateOf(false)
 
-    fun nextRound(){
+    private val _correctAnswer = MutableLiveData<String?>()
+    val correctAnswer: LiveData<String?> get() = _correctAnswer
 
-
-    }
 
     var difficult = "Fácil"
     var genre = "Todos"
-    fun changeDiff(difficulty: String ){
+    fun changeDiff(difficulty: String) {
         difficult = difficulty
     }
 
     fun changeGenre(genre: String) {
         this.genre = genre
     }
+
     fun setRounds(selectedRounds: Int) {
         _rounds.value = selectedRounds
     }
+
     fun getRandomQuestion(genre: String): QuestionModel? {
 
         val filteredQuestions = QuestionProvider.listaDePreguntas.filter {
@@ -68,9 +54,7 @@ class QuestionViewModel : ViewModel() {
 
         val newQuestion = filteredQuestions.randomOrNull()
 
-        // Actualizar el multiplicador según el nivel de dificultad
         scoreMultiplier = getScoreMultiplier()
-
         return newQuestion
     }
 
@@ -82,17 +66,20 @@ class QuestionViewModel : ViewModel() {
     fun resetCounters() {
         _correctCounter.value = 0
     }
+
     fun setTimerDuration(duration: Int) {
         _timerDuration.value = duration
     }
 
-    fun subProgressBar (substract: Float){
+    fun subProgressBar(substract: Float) {
         _progress.value = _progress.value?.minus(substract) ?: 1f
     }
-    fun incrementScore() {
+
+    private fun incrementScore() {
         val scoreToAdd = (2 * scoreMultiplier).toInt()
         _score.value = (_score.value ?: 0) + scoreToAdd
     }
+
     private fun getScoreMultiplier(): Double {
         return when (difficult) {
             "Fácil" -> 1.0
@@ -101,11 +88,17 @@ class QuestionViewModel : ViewModel() {
             else -> 1.0
         }
     }
+
     fun resetScore() {
         _score.value = 0
     }
+
     fun changeColorMode(isOn: Boolean) {
         colorModeOn = isOn
+    }
+
+    fun answerSelected(){
+
     }
 
 }

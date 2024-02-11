@@ -2,14 +2,12 @@ package com.example.trivial.view
 
 
 import android.content.res.Configuration
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
@@ -39,17 +37,10 @@ import androidx.navigation.NavController
 import com.example.trivial.R
 import com.example.trivial.viewmodel.QuestionViewModel
 
-// ...
-
-// ...
 
 @Composable
 fun MenuScreen(navController: NavController, questionViewModel: QuestionViewModel) {
-    var textFieldValue by remember { mutableStateOf("") }
-
-    LaunchedEffect(questionViewModel) {
-        questionViewModel.resetScore()
-    }
+    LaunchedEffect(questionViewModel) { questionViewModel.resetScore() }
 
     val configuration = LocalConfiguration.current
     val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
@@ -61,7 +52,8 @@ fun MenuScreen(navController: NavController, questionViewModel: QuestionViewMode
                 painterResource(
                     id = if (!questionViewModel.colorModeOn) R.drawable.claro else R.drawable.image
                 ), contentScale = ContentScale.FillBounds
-            ).scale(1f),
+            )
+            .scale(1f),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
@@ -124,7 +116,6 @@ fun MenuScreen(navController: NavController, questionViewModel: QuestionViewMode
                 }
             }
         } else {
-            // Portrait mode layout
             Button(
                 modifier = Modifier
                     .padding(46.dp)

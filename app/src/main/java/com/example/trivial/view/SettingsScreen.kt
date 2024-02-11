@@ -1,6 +1,5 @@
 package com.example.trivial.view
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -24,7 +23,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Slider
-import androidx.compose.material3.SliderColors
 import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
@@ -58,17 +56,17 @@ fun SettingsScreen(navController: NavController, questionViewModel: QuestionView
     var difficulty by remember { mutableStateOf(questionViewModel.difficult) }
     var type by remember { mutableStateOf(questionViewModel.genre) }
     var show by remember { mutableStateOf(false) }
-    var rounds by remember { mutableStateOf(questionViewModel.rounds ) }
 
 
     Column(
         modifier = Modifier
             .fillMaxSize()
-        .paint(
-            painterResource(
-                id = if (!questionViewModel.colorModeOn) R.drawable.claro else R.drawable.image
-            ), contentScale = ContentScale.FillBounds
-    ).scale(1f),
+            .paint(
+                painterResource(
+                    id = if (!questionViewModel.colorModeOn) R.drawable.claro else R.drawable.image
+                ), contentScale = ContentScale.FillBounds
+            )
+            .scale(1f),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top
     ) {
@@ -89,7 +87,8 @@ fun SettingsScreen(navController: NavController, questionViewModel: QuestionView
             fontSize = 24.sp,
         )
         roundsRadioButton { selectedRounds ->
-            questionViewModel.setRounds(selectedRounds) }
+            questionViewModel.setRounds(selectedRounds)
+        }
 
         Row(verticalAlignment = Alignment.CenterVertically)
         {
@@ -113,8 +112,10 @@ fun SettingsScreen(navController: NavController, questionViewModel: QuestionView
             ),
             shape = RectangleShape
         ) {
-            Text("Ayuda",
-                color = MaterialTheme.colorScheme.primary)
+            Text(
+                "Ayuda",
+                color = MaterialTheme.colorScheme.primary
+            )
         }
         HelpDialog(show, { show = false }, { show = false })
         Button(
@@ -131,8 +132,10 @@ fun SettingsScreen(navController: NavController, questionViewModel: QuestionView
             shape = RectangleShape
 
         ) {
-            Text(text = "Volver al menu",
-                color = MaterialTheme.colorScheme.primary)
+            Text(
+                text = "Volver al menu",
+                color = MaterialTheme.colorScheme.primary
+            )
         }
 
     }
@@ -150,11 +153,13 @@ fun difficultyDropDown(questionViewModel: QuestionViewModel): String {
         modifier = Modifier
             .offset(y = (10).dp)
     ) {
-        Box{
+        Box {
             OutlinedTextField(
                 value = selectedText,
-                onValueChange = { selectedText = it
-                                questionViewModel.changeDiff(it)},
+                onValueChange = {
+                    selectedText = it
+                    questionViewModel.changeDiff(it)
+                },
                 enabled = false,
                 readOnly = true,
                 modifier = Modifier
@@ -186,7 +191,6 @@ fun difficultyDropDown(questionViewModel: QuestionViewModel): String {
     }
     return selectedText
 }
-
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -221,7 +225,14 @@ fun typeDropDown(questionViewModel: QuestionViewModel): String {
             modifier = Modifier
                 .padding(16.dp)
         ) {
-            listOf("Historia", "Geografía", "Entretenimiento", "Deportes", "Arte y literatura",  "Todos").forEach { type ->
+            listOf(
+                "Historia",
+                "Geografía",
+                "Entretenimiento",
+                "Deportes",
+                "Arte y literatura",
+                "Todos"
+            ).forEach { type ->
                 DropdownMenuItem(text = { Text(text = type) }, onClick = {
                     expanded = false
                     selectedText = type
@@ -274,7 +285,6 @@ fun HelpDialog(show: Boolean, onDismiss: () -> Unit, onConfirm: () -> Unit) {
         )
     }
 }
-
 
 
 @Composable
@@ -340,6 +350,7 @@ fun timerSeekBar(questionViewModel: QuestionViewModel) {
         textAlign = TextAlign.Center
     )
 }
+
 @Composable
 fun switchColorMode(questionViewModel: QuestionViewModel) {
     var checked by remember { mutableStateOf(questionViewModel.colorModeOn) }
