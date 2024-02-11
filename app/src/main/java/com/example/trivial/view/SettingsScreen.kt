@@ -80,12 +80,12 @@ fun SettingsScreen(navController: NavController, questionViewModel: QuestionView
                     text = "Rondas",
                     fontSize = 24.sp,
                 )
-                roundsRadioButton { selectedRounds ->
+                RoundsRadioButton { selectedRounds ->
                     questionViewModel.setRounds(selectedRounds)
                 }
-                Column (
+                Column(
                     modifier = Modifier.padding(start = 96.dp)
-                ){
+                ) {
 
 
                     difficulty = difficultyDropDown(questionViewModel)
@@ -102,7 +102,7 @@ fun SettingsScreen(navController: NavController, questionViewModel: QuestionView
                     fontSize = 24.sp,
                     modifier = Modifier.padding(top = 10.dp)
                 )
-                timerSeekBar(questionViewModel)
+                TimerSeekBar(questionViewModel)
             }
 
 
@@ -113,7 +113,7 @@ fun SettingsScreen(navController: NavController, questionViewModel: QuestionView
                     fontSize = 24.sp,
                 )
                 Spacer(modifier = Modifier.width(42.dp))
-                switchColorMode(questionViewModel)
+                SwitchColorMode(questionViewModel)
             }
             Row {
 
@@ -159,88 +159,88 @@ fun SettingsScreen(navController: NavController, questionViewModel: QuestionView
 
         }
     } else {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .paint(
-                painterResource(
-                    id = if (!questionViewModel.colorModeOn) R.drawable.claro else R.drawable.image
-                ), contentScale = ContentScale.FillBounds
-            )
-            .scale(1f),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Top
-    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .paint(
+                    painterResource(
+                        id = if (!questionViewModel.colorModeOn) R.drawable.claro else R.drawable.image
+                    ), contentScale = ContentScale.FillBounds
+                )
+                .scale(1f),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Top
+        ) {
 
-        difficulty = difficultyDropDown(questionViewModel)
-        type = typeDropDown(questionViewModel)
+            difficulty = difficultyDropDown(questionViewModel)
+            type = typeDropDown(questionViewModel)
 
-        Spacer(modifier = Modifier.height(32.dp))
+            Spacer(modifier = Modifier.height(32.dp))
 
-        Text(
-            text = "Segundos por ronda",
-            fontSize = 24.sp,
-        )
-        timerSeekBar(questionViewModel)
-
-        Text(
-            text = "Rondas",
-            fontSize = 24.sp,
-        )
-        roundsRadioButton { selectedRounds ->
-            questionViewModel.setRounds(selectedRounds)
-        }
-
-        Row(verticalAlignment = Alignment.CenterVertically)
-        {
             Text(
-                text = "Modo Oscuro",
+                text = "Segundos por ronda",
                 fontSize = 24.sp,
             )
-            Spacer(modifier = Modifier.width(32.dp))
-            switchColorMode(questionViewModel)
-        }
+            TimerSeekBar(questionViewModel)
 
-
-        Button(
-            modifier = Modifier
-                .fillMaxWidth(0.4f)
-                .padding(top = 46.dp),
-            onClick = { show = true },
-            colors = ButtonDefaults.buttonColors(
-                containerColor = MaterialTheme.colorScheme.secondary,
-                contentColor = MaterialTheme.colorScheme.primary
-            ),
-            shape = RectangleShape
-        ) {
             Text(
-                "Ayuda",
-                color = MaterialTheme.colorScheme.primary
+                text = "Rondas",
+                fontSize = 24.sp,
             )
+            RoundsRadioButton { selectedRounds ->
+                questionViewModel.setRounds(selectedRounds)
+            }
+
+            Row(verticalAlignment = Alignment.CenterVertically)
+            {
+                Text(
+                    text = "Modo Oscuro",
+                    fontSize = 24.sp,
+                )
+                Spacer(modifier = Modifier.width(32.dp))
+                SwitchColorMode(questionViewModel)
+            }
+
+
+            Button(
+                modifier = Modifier
+                    .fillMaxWidth(0.4f)
+                    .padding(top = 46.dp),
+                onClick = { show = true },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.secondary,
+                    contentColor = MaterialTheme.colorScheme.primary
+                ),
+                shape = RectangleShape
+            ) {
+                Text(
+                    "Ayuda",
+                    color = MaterialTheme.colorScheme.primary
+                )
+            }
+            HelpDialog(show, { show = false }, { show = false })
+            Button(
+                modifier = Modifier
+                    .fillMaxWidth(0.4f),
+                onClick = {
+                    navController.navigate("menu_screen")
+
+                },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.secondary,
+                    contentColor = MaterialTheme.colorScheme.primary
+                ),
+                shape = RectangleShape
+
+            ) {
+                Text(
+                    text = "Volver al menu",
+                    color = MaterialTheme.colorScheme.primary
+                )
+            }
+
         }
-        HelpDialog(show, { show = false }, { show = false })
-        Button(
-            modifier = Modifier
-                .fillMaxWidth(0.4f),
-            onClick = {
-                navController.navigate("menu_screen")
-
-            },
-            colors = ButtonDefaults.buttonColors(
-                containerColor = MaterialTheme.colorScheme.secondary,
-                contentColor = MaterialTheme.colorScheme.primary
-            ),
-            shape = RectangleShape
-
-        ) {
-            Text(
-                text = "Volver al menu",
-                color = MaterialTheme.colorScheme.primary
-            )
-        }
-
     }
-}
 }
 
 
@@ -392,7 +392,7 @@ fun HelpDialog(show: Boolean, onDismiss: () -> Unit, onConfirm: () -> Unit) {
 
 
 @Composable
-fun roundsRadioButton(onRoundSelected: (Int) -> Unit) {
+fun RoundsRadioButton(onRoundSelected: (Int) -> Unit) {
     val radioOptions = listOf(5, 10, 15)
     val (selectedOption, onOptionSelected) = remember { mutableStateOf(radioOptions[1]) }
     val configuration = LocalConfiguration.current
@@ -426,41 +426,41 @@ fun roundsRadioButton(onRoundSelected: (Int) -> Unit) {
                 onRoundSelected(selectedOption)
             }
         }
-} else {
-    Column {
-        radioOptions.forEach { rounds ->
-            Row(
-                Modifier
-                    .fillMaxWidth()
-                    .selectable(
+    } else {
+        Column {
+            radioOptions.forEach { rounds ->
+                Row(
+                    Modifier
+                        .fillMaxWidth()
+                        .selectable(
+                            selected = (rounds == selectedOption),
+                            onClick = {
+                                onOptionSelected(rounds)
+                            }
+                        )
+                        .padding(horizontal = 16.dp)
+                ) {
+                    RadioButton(
                         selected = (rounds == selectedOption),
-                        onClick = {
-                            onOptionSelected(rounds)
-                        }
+                        onClick = { onOptionSelected(rounds) }
                     )
-                    .padding(horizontal = 16.dp)
-            ) {
-                RadioButton(
-                    selected = (rounds == selectedOption),
-                    onClick = { onOptionSelected(rounds) }
-                )
-                Text(
-                    text = rounds.toString(),
-                    modifier = Modifier.padding(start = 16.dp)
-                )
+                    Text(
+                        text = rounds.toString(),
+                        modifier = Modifier.padding(start = 16.dp)
+                    )
+                }
+            }
+
+            LaunchedEffect(selectedOption) {
+                onRoundSelected(selectedOption)
             }
         }
-
-        LaunchedEffect(selectedOption) {
-            onRoundSelected(selectedOption)
-        }
     }
-}
 }
 
 
 @Composable
-fun timerSeekBar(questionViewModel: QuestionViewModel) {
+fun TimerSeekBar(questionViewModel: QuestionViewModel) {
     val timerDuration by questionViewModel.timerDuration.observeAsState()
     val configuration = LocalConfiguration.current
     val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
@@ -517,7 +517,7 @@ fun timerSeekBar(questionViewModel: QuestionViewModel) {
 }
 
 @Composable
-fun switchColorMode(questionViewModel: QuestionViewModel) {
+fun SwitchColorMode(questionViewModel: QuestionViewModel) {
     var checked by remember { mutableStateOf(questionViewModel.colorModeOn) }
 
     Switch(

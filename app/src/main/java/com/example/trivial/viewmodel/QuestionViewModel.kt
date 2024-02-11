@@ -12,28 +12,36 @@ import com.example.trivial.model.QuestionProvider
 
 class QuestionViewModel : ViewModel() {
     private val _actualQuestion = MutableLiveData<QuestionModel?>()
-    private val _rounds = MutableLiveData<Int>().apply { value = 10 }
     val actualQuestion: LiveData<QuestionModel?> get() = _actualQuestion
+
+    private val _rounds = MutableLiveData<Int>().apply { value = 10 }
     val rounds: LiveData<Int> get() = _rounds
-    fun setCurrentQuestion(question: QuestionModel?) {
-        _actualQuestion.value = question
-    }
 
     private val _correctCounter = MutableLiveData<Int>().apply { value = 0 }
+
     private val _timerDuration = MutableLiveData<Int>().apply { value = 10 }
     val timerDuration: LiveData<Int> get() = _timerDuration
+
     private var _progress = MutableLiveData<Float>().apply { value = 1f }
+
     private val _score = MutableLiveData<Int>().apply { value = 0 }
     val score: LiveData<Int> get() = _score
+
     private var scoreMultiplier = 1.0
+
     var colorModeOn by mutableStateOf(false)
 
     private val _correctAnswer = MutableLiveData<String?>()
     val correctAnswer: LiveData<String?> get() = _correctAnswer
 
 
+
     var difficult = "Fácil"
     var genre = "Todos"
+
+    fun setCurrentQuestion(question: QuestionModel?) {
+        _actualQuestion.value = question
+    }
     fun changeDiff(difficulty: String) {
         difficult = difficulty
     }
@@ -88,7 +96,6 @@ class QuestionViewModel : ViewModel() {
             else -> 1.0
         }
     }
-
     fun resetScore() {
         _score.value = 0
     }
@@ -97,8 +104,5 @@ class QuestionViewModel : ViewModel() {
         colorModeOn = isOn
     }
 
-    fun answerSelected(){
-
-    }
 
 }

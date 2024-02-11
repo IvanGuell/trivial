@@ -24,7 +24,7 @@ import com.example.trivial.viewmodel.QuestionViewModel
 
 @Composable
 fun ResultScreen(navController: NavController, questionViewModel: QuestionViewModel) {
-    val score = questionViewModel.score.observeAsState(0).value ?: 0
+    val score = questionViewModel.score.observeAsState(0).value
 
     Column(
         modifier = Modifier
@@ -89,7 +89,7 @@ fun ResultScreen(navController: NavController, questionViewModel: QuestionViewMo
         }
         Spacer(modifier = Modifier.height(16.dp))
 
-        ShareButton(text = "¡Obtuve una puntuación de $score en en-quiz-tados! ¿Puedes superarme?")
+        ShareButton(text = "¡Obtuve una puntuación de $score en En-quiz-tados! ¿Puedes superarme?")
 
     }
 }
